@@ -1,0 +1,25 @@
+# The port number that should be used by the server. Default is 80
+port: 8080
+
+# The SQLite database file
+database: Belfast+Bikes+Docking+Stations.sqlite
+
+# The list of endpoints that the server should handle
+#
+# url    HTTP method/verb followed by the url
+# query  SQL query that should be executed with the url
+endpoints:
+  - url: GET /stations
+    query: SELECT * FROM `stations`
+
+  - url: GET /stations/count
+    query: SELECT count(*) as `total_stations` FROM `stations`
+
+  - url: GET /stations/size/{number}
+    query: SELECT * FROM `stations` WHERE `StationSize` = {number}
+
+  - url: GET /stations/size/range/{min}-{max}
+    query: SELECT * FROM `stations` WHERE `StationSize` BETWEEN {min} AND {max}
+
+  - url: GET /dock/{id}
+    query: SELECT * FROM `stations` where `Dock` = {id}
