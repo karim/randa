@@ -7,15 +7,21 @@ import (
 	"time"
 )
 
-func startServer(port int) {
+func startServer(config Config) {
 	http.HandleFunc("/", handler)
 
-	log.Println()
-	strPort := strconv.Itoa(port)
-	log.Printf("Listening on port: %s\n", strPort)
-	log.Println("Press Ctrl+C to stop")
+	strPort := strconv.Itoa(config.Port)
 
-	log.Fatal(http.ListenAndServe(":"+strPort, nil))
+	// Start either a HTTP or HTTPS server
+	var err error
+	if config.HTTPS.Certificate != "" && config.HTTPS.Key != "" {
+		log.Println("HTTPS server listening on port:", strPort)
+		err = http.ListenAndServeTLS(":"+strPort, config.HTTPS.Certificate, config.HTTPS.Key, nil)
+	} else {
+		log.Println("HTTP server listening on port:", strPort)
+		err = http.ListenAndServe(":"+strPort, nil)
+	}
+	log.Fatal(err)
 }
 
 func handler(response http.ResponseWriter, request *http.Request) {

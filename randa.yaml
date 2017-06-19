@@ -1,5 +1,11 @@
-# The port number that should be used by the server. Default is 80
-port: 8080
+# To enable HTTPS you need to supply your certificate and private key.
+https:
+  certificate: certificate.crt
+  key: private.key
+
+# The port number that should be used by the server.
+# Default is 80 for HTTP and 443 for HTTPS.
+port: 8443
 
 # The SQLite database file
 database: Belfast+Bikes+Docking+Stations.sqlite

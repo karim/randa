@@ -10,6 +10,10 @@ import (
 
 // Config file (.yaml) structure
 type Config struct {
+	HTTPS struct {
+		Certificate string `yaml:"certificate"`
+		Key         string `yaml:"key"`
+	} `yaml:"https"`
 	Port      int    `yaml:"port"`
 	Database  string `yaml:"database"`
 	Endpoints []struct {
@@ -33,9 +37,13 @@ func loadConfig() Config {
 		log.Fatal("config:", err)
 	}
 
-	// Use the default port number '80' if port number is not set
+	// Use the default port number '80' for HTTP and '443' for HTTPS if port number is not set
 	if config.Port == 0 {
-		config.Port = 80
+		if config.HTTPS.Certificate != "" && config.HTTPS.Key != "" {
+			config.Port = 443
+		} else {
+			config.Port = 80
+		}
 	}
 
 	// Check if the database is set
