@@ -1,0 +1,7 @@
+# Binaries
+*.exe
+
+# Certificates
+*.crt
+*.key
+*.pem
