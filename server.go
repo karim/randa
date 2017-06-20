@@ -41,7 +41,8 @@ func handler(response http.ResponseWriter, request *http.Request) {
 	id := routeMatch(request.URL.String())
 	if id == -1 {
 		// no match
-		r = []byte("{}")
+		response.WriteHeader(http.StatusNotFound)
+		r = []byte(`{"message":"Not Found"}`)
 	} else {
 		r = runQuery(request.URL.String(), endpoints[id])
 	}
